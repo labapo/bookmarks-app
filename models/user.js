@@ -1,6 +1,8 @@
 //Schema shows model how to structure the data, model allows us to use mongoose methods and functionality that lets us talk to the database
 const { Schema, model } = require("mongoose");
 const bcrypt = require("bcrypt");
+//using the crypto feature that is part of node.js
+const crypto = require('crypto');
 //all caps = something that will never change
 ///ASK WHAT SALT ROUNDS DOES?
 const SALT_ROUNDS = 6;
@@ -36,8 +38,11 @@ userSchema.pre("save", async function (next) {
   //every time the password is the same, return the password
   if (!this.isModified("password")) return next();
   //if the password changed then use bcrypt to has the password and I'm not sure what salt rounds do
+  //extra excryption. Needs to understand createHmac and sha 256 more
+  const password = crypto.createHmac('sha256', process.env.SECRET).update(this.password).split('').reverse().join('')
   //this binds the password to the schema
-  this.password = await bcrypt.hash(this.password, SALT_ROUNDS);
+  //bcrypt is how we encrypt the password
+  this.password = await bcrypt.hash(password, SALT_ROUNDS);
 });
 
 //salt round = With "salt round" they actually mean the cost factor. 
