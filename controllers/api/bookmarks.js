@@ -1,5 +1,6 @@
 require('dotenv').config()
 const Bookmark = require('../../models/bookmark')
+const User = require('../../models/user')
 
 //delete bookmark
 //create bookmark
@@ -30,18 +31,31 @@ const updateBookmark = async (req, res, next) => {
         res.status(400).json({ msg: error.message})
     }
 }
-
+//add to set - adds bookmark to user's bookmark arrays
+//the createdBookmark is going to wait to get all the bookmark data to create the bookmark
+//the user will takethe bookmark and that will be added to the created bookmark variable. 
+//the user data is saved that has the new bookmark.
 const createBookmark = async (req, res, next) => {
     try {
         const createdBookmark = await Bookmark.create(req.body)
+        const user = await User.findOne({ email: res.locals.data.email })
+        user.bookmarks.addToSet(createdBookmark)
+        await user.save()
         res.locals.data.bookmark = createdBookmark
+        next()
     } catch (error) {
-        res.status(400).json({ msg: error.message})
+        res.status(400).json({ msg: error.message })
     }
+}
+
+//response bookmark data
+const respondWithBookmark = (req, res) => {
+    res.json(res.locals.data.bookmarks)
 }
 
 module.exports = {
     destroyBookmark,
     updateBookmark,
-    createBookmark
+    createBookmark, 
+    respondWithBookmark
 }
