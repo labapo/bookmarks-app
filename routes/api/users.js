@@ -5,7 +5,7 @@ const ensureLoggedIn = require('../../config/ensureLoggedIn')
 /* /api/users
 SignUp
 */ 
-router.post('/', userController.respondWithToken)
+router.post('/', userController.signUp, userController.respondWithToken)
 
 /* 
 /api/users/login

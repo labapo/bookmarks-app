@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const bookmarkController = require('../../controllers/api/bookmarks')
-const checkToken = require('../../config/ensureLoggedIn')
+const checkToken = require('../../config/checkToken')
 const ensureLoggedIn = require('../../config/ensureLoggedIn')
 
 /* /api/users/:id

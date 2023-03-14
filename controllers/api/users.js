@@ -2,7 +2,7 @@ require('dotenv').config()
 const User = require('../../models/user')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
-
+const crypto = require('crypto')
 
 const signUp = async (req, res, next) => {
     try {
@@ -20,12 +20,12 @@ const login = async (req, res, next) => {
     try {
         //create user variable, where it will use the user schema and find one instance by email. 
         //the email will be found in the request body. 
-        const user = await User.findOne({ email: req.body.email})
+        const user = await User.findOne({ email: req.body.email })
         //we first have to see if the user and the encrypted password match
         //if we dont see a user, throw a new error
         if(!user) throw new Error('User not found, email was invalid')
         //extra password encryption for security
-        const password = crypto.createHmac('sha256', process.env.SECRET).update(req.body.password).split('').reverse().join('')
+        const password = crypto.createHmac('sha256', process.env.SECRET).update(req.body.password).digest('hex').split('').reverse().join('')
         //bcrypt.compare = bcrypt's method to compare encrypted passwords
         const match = await bcrypt.compare(password, user.password)
         if(!match) throw new Error('Password did not match')

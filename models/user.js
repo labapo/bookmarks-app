@@ -39,7 +39,7 @@ userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
   //if the password changed then use bcrypt to has the password and I'm not sure what salt rounds do
   //extra excryption. Needs to understand createHmac and sha 256 more
-  const password = crypto.createHmac('sha256', process.env.SECRET).update(this.password).split('').reverse().join('')
+  const password = crypto.createHmac('sha256', process.env.SECRET).update(this.password).digest('hex').split('').reverse().join('')
   //this binds the password to the schema
   //bcrypt is how we encrypt the password
   this.password = await bcrypt.hash(password, SALT_ROUNDS);
