@@ -1,6 +1,7 @@
+require('dotenv').config()
 //Schema shows model how to structure the data, model allows us to use mongoose methods and functionality that lets us talk to the database
-const { Schema, model } = require("mongoose");
-const bcrypt = require("bcrypt");
+const { Schema, model } = require('mongoose');
+const bcrypt = require('bcrypt');
 //using the crypto feature that is part of node.js
 const crypto = require('crypto');
 //all caps = something that will never change
@@ -34,7 +35,7 @@ const userSchema = new Schema(
   }
 );
 // preehook need more information on this?
-userSchema.pre("save", async function (next) {
+userSchema.pre('save', async function (next) {
   //every time the password is the same, return the password
   if (!this.isModified("password")) return next();
   //if the password changed then use bcrypt to has the password and I'm not sure what salt rounds do

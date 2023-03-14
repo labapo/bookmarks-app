@@ -50,7 +50,7 @@ const createBookmark = async (req, res, next) => {
 
 //response bookmark data
 const respondWithBookmark = (req, res) => {
-    res.json(res.locals.data.bookmarks)
+    res.json(res.locals.data.bookmark)
 }
 
 module.exports = {

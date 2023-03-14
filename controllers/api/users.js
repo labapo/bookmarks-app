@@ -40,7 +40,7 @@ const login = async (req, res, next) => {
 const getBookmarksByUser = async (req, res, next) => {
     try {
         //look at the email to find a user, and populate all their bookmarks and turn it into an array
-        const user = await User.findOne({ email: req.locals.data.email }).populate('bookmarks').sort('bookmarks.createdAt').exec()
+        const user = await User.findOne({ email: res.locals.data.email }).populate('bookmarks').sort('bookmarks.createdAt').exec()
         const bookmarks = user.bookmarks
         res.locals.data.bookmarks = bookmarks 
         next()
