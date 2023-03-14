@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const bookmarkController = require('../../controllers/api/bookmarks')
-const checkToken = require('../../config')
+const checkToken = require('../../config/ensureLoggedIn')
 const ensureLoggedIn = require('../../config/ensureLoggedIn')
 
 /* /api/users/:id
@@ -17,3 +17,5 @@ router.put('/:id', checkToken, ensureLoggedIn, bookmarkController.updateBookmark
 POST
 create bookmark */ 
 router.post('/', checkToken, ensureLoggedIn, bookmarkController.createBookmark, bookmarkController.respondWithBookmark)
+
+module.exports = router
